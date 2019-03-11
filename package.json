@@ -1,0 +1,20 @@
+{
+  "name": "ml5_study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:client": "webpack --config webpack.config.client.js --watch --mode development",
+    "dev:server": "webpack --config webpack.config.server.js --watch --mode development",
+    "dev:start": "nodemon src/server.js --watch src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+
+  }
+}
