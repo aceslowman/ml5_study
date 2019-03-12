@@ -58,7 +58,7 @@
           <th>probability</th>
         </tr>
       </table>
-      <p id="chat"></p>
+      <!-- <p id="chat"></p> -->
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.min.js"></script>
@@ -81,7 +81,7 @@
 
       classifier = ml5.imageClassifier('MobileNet', video, ()=>{
         select('#status').html('Model Loaded');
-        setInterval(()=>displayResults(), 500);
+        setInterval(()=>displayResults(), 750);
       });
     }
 
@@ -89,30 +89,33 @@
       classifier.predict((err, res)=>{
         if(err) console.error(err);
 
+        results = [];
+
         for(let result of res){
 
           let found = results.some((el)=>{
             return el.className === result.className;
           });
 
-          if(!found){
-            results.push(result);
-          }else{
+          if(found){
             let id = results.findIndex((el)=>{
               return el.className === result.className;
             });
 
             results[id].probability = result.probability;
+          }else{
+            results.push(result);
           }
         }
 
         results.sort((a,b)=>{return a.probability - b.probability});
+        results = results.slice(0, 5);
       });
     }
 
     function displayResults(){
       classifyVideo();
-      document.getElementById('chat').innerHTML = 'chaaatttt';
+      // document.getElementById('chat').innerHTML = 'chaaatttt';
 
       document.getElementById('result').innerHTML = `<tr>
         <th>classname</th>
@@ -120,6 +123,8 @@
       </tr>`;
 
       for(let i = results.length - 1; i > 0; i--){
+        // TODO: flash yellow on any new ones
+
         let tr = document.createElement('tr');
         let td_class = document.createElement("td");
         let td_prob = document.createElement("td");
@@ -128,6 +133,7 @@
         td_prob.appendChild(document.createTextNode(results[i].probability.toFixed(2)));
         tr.appendChild(td_class);
         tr.appendChild(td_prob);
+        td_prob.style.backgroundColor = `hsl(120, ${(results[i].probability * 100)}%, ${100-(results[i].probability * 50)}%)`;
 
         document.getElementById('result').appendChild(tr);
       }
