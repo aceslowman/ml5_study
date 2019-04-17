@@ -31,7 +31,7 @@ const s = ( p ) => {
     p.textSize('20');
     p.textAlign(p.RIGHT, p.TOP);
 
-    rnn = ml5.charRNN('./models/hemingway/', ()=>{
+    rnn = ml5.charRNN('./models/lstm/hemingway/', ()=>{
       generateText('hello world');
       p.select('#status').html('<p>hemingway Model Loaded</p> ', true);
     });
